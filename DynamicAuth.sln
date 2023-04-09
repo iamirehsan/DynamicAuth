@@ -1,0 +1,89 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth", "DynamicAuth\DynamicAuth.csproj", "{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Application", "1.Application", "{1F2B07C8-E1B5-43A0-A845-1905C2887BAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Service", "2.Service", "{99B372F5-EC9C-40CD-ABD9-09AD57447FB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Domain", "3.Domain", "{972C9FA8-D6B9-40BC-AEF9-5F34B670DA12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Repository", "4.Repository", "{C37DE5DB-DAFB-4AC7-8C35-614B4827D58A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Infrastructure", "5.Infrastructure", "{97FA35C4-7306-49E8-AA17-306A28687470}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Message", "6.Message", "{5BCFBC0E-1078-432F-B008-83BDD39B728C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Service", "DynamicAuth.Service\DynamicAuth.Service.csproj", "{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Service.Implimentation", "DynamicAuth.Service.Implimentation\DynamicAuth.Service.Implimentation.csproj", "{8EE2A28C-12B9-4C77-B996-A5E9511D7491}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Domain", "DynamicAuth.Domain\DynamicAuth.Domain.csproj", "{9588EF5D-8437-467B-924F-FC20E529040F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Repository", "DynamicAuth.Repository\DynamicAuth.Repository.csproj", "{E4C66676-6634-4F25-968D-AD0DB89ADBC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Repository.Implimentation", "DynamicAuth.Repository.Implimentation\DynamicAuth.Repository.Implimentation.csproj", "{D9C34915-9660-4D3E-A13C-BD70B89E894A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Infrastructure", "DynamicAuth.Infrastructure\DynamicAuth.Infrastructure.csproj", "{F2747458-6257-4891-944E-BE704A108280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicAuth.Messages", "DynamicAuth.Messages\DynamicAuth.Messages.csproj", "{10A745F5-D30D-4F0F-9C63-B1A5BF207F56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE2A28C-12B9-4C77-B996-A5E9511D7491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE2A28C-12B9-4C77-B996-A5E9511D7491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE2A28C-12B9-4C77-B996-A5E9511D7491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE2A28C-12B9-4C77-B996-A5E9511D7491}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9588EF5D-8437-467B-924F-FC20E529040F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9588EF5D-8437-467B-924F-FC20E529040F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9588EF5D-8437-467B-924F-FC20E529040F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9588EF5D-8437-467B-924F-FC20E529040F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4C66676-6634-4F25-968D-AD0DB89ADBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4C66676-6634-4F25-968D-AD0DB89ADBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4C66676-6634-4F25-968D-AD0DB89ADBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4C66676-6634-4F25-968D-AD0DB89ADBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C34915-9660-4D3E-A13C-BD70B89E894A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C34915-9660-4D3E-A13C-BD70B89E894A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C34915-9660-4D3E-A13C-BD70B89E894A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C34915-9660-4D3E-A13C-BD70B89E894A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2747458-6257-4891-944E-BE704A108280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2747458-6257-4891-944E-BE704A108280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2747458-6257-4891-944E-BE704A108280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2747458-6257-4891-944E-BE704A108280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A745F5-D30D-4F0F-9C63-B1A5BF207F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A745F5-D30D-4F0F-9C63-B1A5BF207F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A745F5-D30D-4F0F-9C63-B1A5BF207F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A745F5-D30D-4F0F-9C63-B1A5BF207F56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E37DB9F-36B0-41BA-B5EF-2FC65151D40D} = {1F2B07C8-E1B5-43A0-A845-1905C2887BAF}
+		{FDCF0BCF-8316-49EA-B3F0-9F6D4DFA5302} = {99B372F5-EC9C-40CD-ABD9-09AD57447FB2}
+		{8EE2A28C-12B9-4C77-B996-A5E9511D7491} = {99B372F5-EC9C-40CD-ABD9-09AD57447FB2}
+		{9588EF5D-8437-467B-924F-FC20E529040F} = {972C9FA8-D6B9-40BC-AEF9-5F34B670DA12}
+		{E4C66676-6634-4F25-968D-AD0DB89ADBC4} = {C37DE5DB-DAFB-4AC7-8C35-614B4827D58A}
+		{D9C34915-9660-4D3E-A13C-BD70B89E894A} = {C37DE5DB-DAFB-4AC7-8C35-614B4827D58A}
+		{F2747458-6257-4891-944E-BE704A108280} = {97FA35C4-7306-49E8-AA17-306A28687470}
+		{10A745F5-D30D-4F0F-9C63-B1A5BF207F56} = {5BCFBC0E-1078-432F-B008-83BDD39B728C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8572BA0-D6E8-40F0-923D-9DAEB1700EB2}
+	EndGlobalSection
+EndGlobal
