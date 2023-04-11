@@ -6,6 +6,9 @@ using DynamicAuth.Messages.Commands.Validator;
 using DynamicAuth.Domain.Entites;
 using DynamicAuth.Repository.Implimentation;
 using Microsoft.AspNetCore.Identity;
+using DynamicAuth.Service.Interfaces;
+using DynamicAuth.Repository;
+using DynamicAuth.Service.Implimentation.Implementations;
 
 namespace DynamicAuth.Base
 {
@@ -30,18 +33,28 @@ namespace DynamicAuth.Base
         }
         public static void RegisterIdentityService(this IServiceCollection services)
         {
-             services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                          .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddScoped<UserManager<User>>();
+            services.AddIdentity<User, IdentityRole>()
+                .AddErrorDescriber<CustomErrorDescriber>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequiredLength = 8;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
+            
+         
             });
+     
+
 
         }
+        public static void RegisterAllServices(this IServiceCollection services)
+        {
+            services.AddScoped<IServiceHolder, ServiceHolder>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+
     }
 }

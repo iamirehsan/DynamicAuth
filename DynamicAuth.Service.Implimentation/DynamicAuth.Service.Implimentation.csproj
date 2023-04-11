@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Implementations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
@@ -26,6 +22,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DynamicAuth.Domain\DynamicAuth.Domain.csproj" />
+    <ProjectReference Include="..\DynamicAuth.Infrastructure\DynamicAuth.Infrastructure.csproj" />
+    <ProjectReference Include="..\DynamicAuth.Repository\DynamicAuth.Repository.csproj" />
+    <ProjectReference Include="..\DynamicAuth.Service\DynamicAuth.Service.csproj" />
   </ItemGroup>
 
 </Project>

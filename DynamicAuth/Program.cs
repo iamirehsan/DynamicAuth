@@ -17,6 +17,8 @@ namespace DynamicAuth
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.UseUrls($"http://localhost:{builder.Configuration.GetValue<string>("port")}");
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -26,7 +28,8 @@ namespace DynamicAuth
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
             builder.Services.RegisterJsonConverterAndCommandValidation();
             builder.Services.RegisterIdentityService();
-           
+            builder.Services.RegisterAllServices();
+
 
 
 
@@ -38,15 +41,13 @@ namespace DynamicAuth
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
+
+
         }
     }
 }

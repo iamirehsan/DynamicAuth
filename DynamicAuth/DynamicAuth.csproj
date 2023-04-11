@@ -29,6 +29,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DynamicAuth.Messages\DynamicAuth.Messages.csproj" />
     <ProjectReference Include="..\DynamicAuth.Repository.Implimentation\DynamicAuth.Repository.Implimentation.csproj" />
+    <ProjectReference Include="..\DynamicAuth.Service.Implimentation\DynamicAuth.Service.Implimentation.csproj" />
+    <ProjectReference Include="..\DynamicAuth.Service\DynamicAuth.Service.csproj" />
   </ItemGroup>
 
 </Project>
