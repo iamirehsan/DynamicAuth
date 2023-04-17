@@ -29,6 +29,7 @@ namespace DynamicAuth
             builder.Services.RegisterJsonConverterAndCommandValidation();
             builder.Services.RegisterIdentityService();
             builder.Services.RegisterAllServices();
+            builder.Services.RegisterAuthentication(builder.Configuration);
 
 
 
@@ -41,6 +42,7 @@ namespace DynamicAuth
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseAuthentication();
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthorization();

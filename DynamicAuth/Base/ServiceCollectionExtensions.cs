@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using DynamicAuth.Service.Interfaces;
 using DynamicAuth.Repository;
 using DynamicAuth.Service.Implimentation.Implementations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DynamicAuth.Base
 {
@@ -53,6 +56,28 @@ namespace DynamicAuth.Base
         {
             services.AddScoped<IServiceHolder, ServiceHolder>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        public static void RegisterAuthentication(this IServiceCollection services , ConfigurationManager configuration)
+        {
+             services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+            });
         }
 
 

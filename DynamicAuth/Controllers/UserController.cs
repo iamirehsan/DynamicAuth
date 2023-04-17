@@ -1,4 +1,5 @@
-﻿using DynamicAuth.Infrastructure.Base;
+﻿using DynamicAuth.Base;
+using DynamicAuth.Infrastructure.Base;
 using DynamicAuth.Messages.Commands;
 using DynamicAuth.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ namespace DynamicAuth.Controllers
 {
     [Route("api/auth/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ApiControllerBase
     {
         private readonly IServiceHolder _serviceHolder;
 

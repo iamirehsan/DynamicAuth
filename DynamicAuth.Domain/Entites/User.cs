@@ -10,8 +10,9 @@ namespace DynamicAuth.Domain.Entites
         public DateTime DateOfBirth { get; set; }
         public string LastName { get; set; }
         public string NationalId { get; set; }
+        public string RegionId { get; set; }
         public bool IsDeleted { get; set; }
-        public User(string userName, string firstName, string lastName, string email, string phoneNumber, string city, string province, DateTime dateOfBirth, string nationalId)
+        public User(string userName, string firstName, string lastName, string email, string phoneNumber, string city, string province, DateTime dateOfBirth, string nationalId ,string regionId)
         {
             UserName = userName;
             FirstName = firstName;
@@ -23,6 +24,7 @@ namespace DynamicAuth.Domain.Entites
             Province = province;
             DateOfBirth = dateOfBirth;
             NationalId = nationalId;
+            RegionId = regionId;
 
 
         }
