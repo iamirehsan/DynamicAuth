@@ -9,6 +9,6 @@ namespace DynamicAuth.Service.Interfaces
 
         public Task UpdateUser(UpdateUserCommand cmd , string userId);
 
-        public Task UpdatePassword(UpdatePasswordCommand cmd);
+        public Task UpdatePassword(UpdatePasswordCommand cmd , string userId);
     }
 }

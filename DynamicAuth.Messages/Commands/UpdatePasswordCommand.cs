@@ -10,8 +10,9 @@ namespace DynamicAuth.Messages.Commands
 {
     public class UpdatePasswordCommand
     {
-        public string Password{ get; set; }
-        
+        public string CurrentPassword{ get; set; }
+        public string NewPassword { get; set; }
+
 
     }
 }
