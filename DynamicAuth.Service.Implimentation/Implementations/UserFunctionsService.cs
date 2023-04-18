@@ -36,7 +36,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             _unitOfWork = unitOfWork;
             _redisDb = redisService.GetDatabase();
         }
-
         public async Task Signup(SignupCommand cmd)
         {
             await ValidateUserCreation(cmd.NationalId, cmd.Email, cmd.PhoneNumber);
@@ -50,7 +49,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             }
 
         }
-
         public async Task<string> Signin(SigninCommand cmd)
         {
             var user = await _userManager.FindByNameAsync(cmd.UserName);
@@ -60,10 +58,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
                 throw new ManagedException("نام کاربری یا رمز عبور اشتباه است");
             return CreateToken(user);
         }
-
-
-
-
         public async Task UpdateUser(UpdateUserCommand cmd, string userId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
@@ -84,9 +78,12 @@ namespace DynamicAuth.Service.Implimentation.Implementations
         public async Task UpdatePassword(UpdatePasswordCommand cmd, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            await _userManager.ChangePasswordAsync(user, cmd.CurrentPassword, cmd.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, cmd.CurrentPassword, cmd.NewPassword);
+            if (!result.Succeeded)
+                throw new ManagedException(result.Errors.Select(x => x.Description));
+            
         }
-        public async Task ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
+        public async Task ValidateOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
         {
             var otp = await _redisDb.StringGetAsync(cmd.OTPKey);
             if (otp == string.Empty)
@@ -97,7 +94,10 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             if (user is null)
                 throw new ManagedException("نام کاربری یا ایمیل اشتباه میباشد. ");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
+           var result =  await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
+            if (!result.Succeeded)
+                throw new ManagedException(result.Errors.Select(x => x.Description));
+            
 
         }
         public async Task<string> SendOTPByEmailForForgetPassword(string UserNameOrEmial)
@@ -111,7 +111,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             var otp = CodeGenerator.RandomCode(6, new Random());
             const string emailSubject = "درخواست برای بازیابی رمز عبور";
             string emailBody = $"<p><strong>برای بازیابی رمز عبور کد زیر را در در سایت وارد کنید. </strong><br>{otp}</p>\r\n";
-            await EmailSender(user.Email, _configuration.GetValue<string>("OTPEmail"), emailSubject, emailBody, _configuration.GetValue<string>("SmtpServer"), _configuration.GetValue<int>("SmtpPort"), _configuration.GetValue<string>("OTPEmailPassword"));
+            await EmailSender(user.Email, _configuration.GetValue<string>("Email"), emailSubject, emailBody, _configuration.GetValue<string>("SmtpServer"), _configuration.GetValue<int>("SmtpPort"), _configuration.GetValue<string>("EmailPassword"));
             await _redisDb.StringSetAsync(id, otp, TimeSpan.FromMinutes(10));
             return id;
 
@@ -126,7 +126,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == PhoneNumber))
                 throw new ManagedException("شماره موبایل وارد شده در سامانه ثبت شده است. ");
         }
-     
         private string CreateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

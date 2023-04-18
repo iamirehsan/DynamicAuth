@@ -13,6 +13,6 @@ namespace DynamicAuth.Service.Interfaces
 
         public Task<string> SendOTPByEmailForForgetPassword(string UserNameOrEmial);
 
-        public Task ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd);
+        public Task ValidateOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd);
     }
 }
