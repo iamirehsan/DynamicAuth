@@ -8,6 +8,7 @@ using DynamicAuth.Base;
 using DynamicAuth.Repository.Implimentation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using StackExchange.Redis;
 
 namespace DynamicAuth
 {
@@ -30,6 +31,7 @@ namespace DynamicAuth
             builder.Services.RegisterIdentityService();
             builder.Services.RegisterAllServices();
             builder.Services.RegisterAuthentication(builder.Configuration);
+       
 
 
 

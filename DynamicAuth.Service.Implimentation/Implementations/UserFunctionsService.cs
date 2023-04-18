@@ -13,6 +13,9 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using DynamicAuth.Infrastructure.StaticMethods;
+using StackExchange.Redis;
+using static System.Net.WebRequestMethods;
 
 namespace DynamicAuth.Service.Implimentation.Implementations
 {
@@ -22,13 +25,16 @@ namespace DynamicAuth.Service.Implimentation.Implementations
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IDatabase _redisDb;
 
 
-        public UserFunctionsService(UserManager<User> userManager, IConfiguration configuration, IUnitOfWork unitOfWork)
+
+        public UserFunctionsService(UserManager<User> userManager, IConfiguration configuration, IUnitOfWork unitOfWork, IRedisService redisService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _unitOfWork = unitOfWork;
+            _redisDb = redisService.GetDatabase();
         }
 
         public async Task Signup(SignupCommand cmd)
@@ -75,10 +81,41 @@ namespace DynamicAuth.Service.Implimentation.Implementations
 
 
         }
-        public async Task UpdatePassword(UpdatePasswordCommand cmd , string userId)
+        public async Task UpdatePassword(UpdatePasswordCommand cmd, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             await _userManager.ChangePasswordAsync(user, cmd.CurrentPassword, cmd.NewPassword);
+        }
+        public async Task ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
+        {
+            var otp = await _redisDb.StringGetAsync(cmd.OTPKey);
+            if (otp == string.Empty)
+                throw new ManagedException("کد وارد شده منقضی شده است.");
+            if (otp != cmd.OTP)
+                throw new ManagedException("کد وارد شده اشتباه است.");
+            var user = await _userManager.FindByEmailAsync(cmd.UserNameOrPassword) is null ? await _userManager.FindByNameAsync(cmd.UserNameOrPassword) : await _userManager.FindByEmailAsync(cmd.UserNameOrPassword);
+            if (user is null)
+                throw new ManagedException("نام کاربری یا ایمیل اشتباه میباشد. ");
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
+
+        }
+        public async Task<string> SendOTPByEmailForForgetPassword(string UserNameOrEmial)
+        {
+            var user = await _userManager.FindByNameAsync(UserNameOrEmial);
+            if (user is null)
+                user = await _userManager.FindByEmailAsync(UserNameOrEmial);
+            if (user is null)
+                throw new ManagedException("نام کاربری یا ایمیل وارد شده در سامانه ثبت نشده است. ");
+            var id = Guid.NewGuid().ToString();
+            var otp = CodeGenerator.RandomCode(6, new Random());
+            const string emailSubject = "درخواست برای بازیابی رمز عبور";
+            string emailBody = $"<p><strong>برای بازیابی رمز عبور کد زیر را در در سایت وارد کنید. </strong><br>{otp}</p>\r\n";
+            await EmailSender(user.Email, _configuration.GetValue<string>("OTPEmail"), emailSubject, emailBody, _configuration.GetValue<string>("SmtpServer"), _configuration.GetValue<int>("SmtpPort"), _configuration.GetValue<string>("OTPEmailPassword"));
+            await _redisDb.StringSetAsync(id, otp, TimeSpan.FromMinutes(10));
+            return id;
+
+
         }
         private async Task ValidateUserCreation(string nationalId, string email, string PhoneNumber)
         {
@@ -89,6 +126,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             if (await _userManager.Users.AnyAsync(x => x.PhoneNumber == PhoneNumber))
                 throw new ManagedException("شماره موبایل وارد شده در سامانه ثبت شده است. ");
         }
+     
         private string CreateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -109,13 +147,16 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        private async Task EmailSender(string toEmail , string fromEmail , string subject , string body , string smtpServer , int smtpPort , string senderPassword)
+        private async Task EmailSender(string toEmail, string fromEmail, string subject, string body, string smtpServer, int smtpPort, string senderPassword)
         {
             MailMessage message = new MailMessage(fromEmail, toEmail, subject, body);
             SmtpClient client = new SmtpClient(smtpServer, smtpPort);
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential(fromEmail, senderPassword);
-            await client.SendMailAsync  (message);
+            await client.SendMailAsync(message);
+
         }
+
+    
     }
 }

@@ -24,8 +24,8 @@ namespace DynamicAuth.Controllers
             try
             {
                 var result = await _serviceHolder.UserFunctionsService.Signin(cmd);
-                return Ok(new ResponseMessage("ورود کاربر با موفقیت صورت گرفت. " ,result,result.Count()));
-           
+                return Ok(new ResponseMessage("ورود کاربر با موفقیت صورت گرفت. ", result, result.Count()));
+
             }
             catch (ManagedException ex)
             {
@@ -34,7 +34,7 @@ namespace DynamicAuth.Controllers
             }
         }
         [HttpPost("Signup")]
-        public async  Task<IActionResult> Signup(SignupCommand cmd)
+        public async Task<IActionResult> Signup(SignupCommand cmd)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace DynamicAuth.Controllers
         {
             try
             {
-                await _serviceHolder.UserFunctionsService.UpdatePassword(cmd,UserId);
+                await _serviceHolder.UserFunctionsService.UpdatePassword(cmd, UserId);
                 return Ok(new ResponseMessage("رمز کاربر با موفقیت تغییر کرد."));
 
             }
@@ -76,6 +76,36 @@ namespace DynamicAuth.Controllers
             {
 
                 return BadRequest(ex.ErrorMessage);
+            }
+        }
+        [HttpPost("SendOTPByEmailForForgetPassword/{userNameOrPassword}")]
+        public async Task<IActionResult> SendOTPByEmailForForgetPassword(string userNameOrPassword)
+        {
+            try
+            {
+                var result = await _serviceHolder.UserFunctionsService.SendOTPByEmailForForgetPassword(userNameOrPassword);
+                return Ok(new ResponseMessage("رمز یک بار مصرف ارسال گردید.", result, result.Count()));
+
+            }
+            catch (ManagedException ex)
+            {
+
+                return BadRequest(ex);
+            }
+        }
+        [HttpPost("ValidteOTPAndChangePassword")]
+        public async Task<IActionResult> ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
+        {
+            try
+            {
+                await _serviceHolder.UserFunctionsService.ValidateOTPAndChangePassword(cmd);
+                return Ok(new ResponseMessage("رمز عبور با موفقیت بازیابی شد."));
+
+            }
+            catch (ManagedException ex)
+            {
+
+                return BadRequest(ex);
             }
         }
     }

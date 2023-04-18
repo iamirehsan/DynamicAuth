@@ -12,6 +12,7 @@ using DynamicAuth.Service.Implimentation.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using StackExchange.Redis;
 
 namespace DynamicAuth.Base
 {
@@ -48,14 +49,14 @@ namespace DynamicAuth.Base
             
          
             });
-     
-
 
         }
         public static void RegisterAllServices(this IServiceCollection services)
         {
             services.AddScoped<IServiceHolder, ServiceHolder>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IRedisService, RedisService>();
+
         }
 
         public static void RegisterAuthentication(this IServiceCollection services , ConfigurationManager configuration)
@@ -79,6 +80,7 @@ namespace DynamicAuth.Base
                 };
             });
         }
+
 
 
     }
