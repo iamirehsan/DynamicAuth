@@ -81,7 +81,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             var result = await _userManager.ChangePasswordAsync(user, cmd.CurrentPassword, cmd.NewPassword);
             if (!result.Succeeded)
                 throw new ManagedException(result.Errors.Select(x => x.Description));
-            
+
         }
         public async Task ValidateOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
         {
@@ -94,10 +94,10 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             if (user is null)
                 throw new ManagedException("نام کاربری یا ایمیل اشتباه میباشد. ");
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-           var result =  await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
+            var result = await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
             if (!result.Succeeded)
                 throw new ManagedException(result.Errors.Select(x => x.Description));
-            
+
 
         }
         public async Task<string> SendOTPByEmailForForgetPassword(string UserNameOrEmial)
@@ -109,14 +109,26 @@ namespace DynamicAuth.Service.Implimentation.Implementations
                 throw new ManagedException("نام کاربری یا ایمیل وارد شده در سامانه ثبت نشده است. ");
             var id = Guid.NewGuid().ToString();
             var otp = CodeGenerator.RandomCode(6, new Random());
-            const string emailSubject = "درخواست برای بازیابی رمز عبور";
-            string emailBody = $"<p><strong>برای بازیابی رمز عبور کد زیر را در در سایت وارد کنید. </strong><br>{otp}</p>\r\n";
-            await EmailSender(user.Email, _configuration.GetValue<string>("Email"), emailSubject, emailBody, _configuration.GetValue<string>("SmtpServer"), _configuration.GetValue<int>("SmtpPort"), _configuration.GetValue<string>("EmailPassword"));
+             var emailmessage = $"{_configuration["Email:OTPBody"]}\n{otp}";
+            EmailSender(user.Email, _configuration["Email:EmailAdrees"], _configuration["Email:OTPSubject"], emailmessage, _configuration["Email:SmtpServer"], int.Parse(_configuration["Email:SmtpPort"]), _configuration["Email:EmailPassword"]);
             await _redisDb.StringSetAsync(id, otp, TimeSpan.FromMinutes(10));
             return id;
 
 
         }
+        private string EmailBodyMaker(string message)
+        {
+            var body = new StringBuilder();
+
+            body.Append("<html><head></head><body style=\"direction: rtl\">");
+            body.Append("<div style='font-family:tahoma;font-size:14px;color:black;'><br>");
+            body.Append(message);
+            body.Append("</div><br>");
+            body.Append("</body></html>");
+
+            return body.ToString();
+        }
+
         private async Task ValidateUserCreation(string nationalId, string email, string PhoneNumber)
         {
             if (await _userManager.Users.AnyAsync(x => x.NationalId == nationalId))
@@ -146,16 +158,22 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        private async Task EmailSender(string toEmail, string fromEmail, string subject, string body, string smtpServer, int smtpPort, string senderPassword)
+        private void EmailSender(string toEmail, string fromEmail, string subject, string body, string smtpServer, int smtpPort, string senderPassword)
         {
-            MailMessage message = new MailMessage(fromEmail, toEmail, subject, body);
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(fromEmail);
+            message.To.Add(toEmail);
+            message.Subject = subject;
+            message.Body = EmailBodyMaker(body);
+            message.IsBodyHtml = true;
+
             SmtpClient client = new SmtpClient(smtpServer, smtpPort);
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential(fromEmail, senderPassword);
-            await client.SendMailAsync(message);
+            client.Send(message);
 
         }
 
-    
+
     }
 }

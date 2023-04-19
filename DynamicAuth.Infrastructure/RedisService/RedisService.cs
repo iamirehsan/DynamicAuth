@@ -7,7 +7,7 @@ public class RedisService : IRedisService
 
     public RedisService(IConfiguration configuration)
     {
-        string connectionString = configuration.GetConnectionString("Redis");
+        string connectionString = configuration.GetValue<string>("Redis");
         ConfigurationOptions options = ConfigurationOptions.Parse(connectionString);
         _redis = ConnectionMultiplexer.Connect(options);
     }

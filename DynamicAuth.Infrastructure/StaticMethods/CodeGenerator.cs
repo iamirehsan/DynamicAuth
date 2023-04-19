@@ -13,7 +13,8 @@ namespace DynamicAuth.Infrastructure.StaticMethods
             var code = string.Empty;
             while(code.Length<codeLength)
             {
-                code.Append((char)random.Next(0, 9));
+                 code += random.Next(0, 9).ToString();
+                
             }
             return code;
 

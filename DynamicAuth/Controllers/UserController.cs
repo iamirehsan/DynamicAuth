@@ -2,6 +2,7 @@
 using DynamicAuth.Infrastructure.Base;
 using DynamicAuth.Messages.Commands;
 using DynamicAuth.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,14 +18,19 @@ namespace DynamicAuth.Controllers
         {
             _serviceHolder = serviceHolder;
         }
-
+        [HttpGet]
+        public bool Get()
+        {
+            return true;
+        }
+        [AllowAnonymous]
         [HttpPost("Signin")]
         public async Task<IActionResult> Signin(SigninCommand cmd)
         {
             try
             {
                 var result = await _serviceHolder.UserFunctionsService.Signin(cmd);
-                return Ok(new ResponseMessage("ورود کاربر با موفقیت صورت گرفت. ", result, result.Count()));
+                return Ok(new ResponseMessage("ورود کاربر با موفقیت صورت گرفت. ", result, 1));
 
             }
             catch (ManagedException ex)
@@ -33,6 +39,7 @@ namespace DynamicAuth.Controllers
                 return BadRequest(ex);
             }
         }
+        [AllowAnonymous]
         [HttpPost("Signup")]
         public async Task<IActionResult> Signup(SignupCommand cmd)
         {
@@ -78,13 +85,14 @@ namespace DynamicAuth.Controllers
                 return BadRequest(ex.ErrorMessage);
             }
         }
+        [AllowAnonymous]
         [HttpPost("SendOTPByEmailForForgetPassword/{userNameOrPassword}")]
         public async Task<IActionResult> SendOTPByEmailForForgetPassword(string userNameOrPassword)
         {
             try
             {
                 var result = await _serviceHolder.UserFunctionsService.SendOTPByEmailForForgetPassword(userNameOrPassword);
-                return Ok(new ResponseMessage("رمز یک بار مصرف ارسال گردید.", result, result.Count()));
+                return Ok(new ResponseMessage("رمز یک بار مصرف ارسال گردید.", result, 1));
 
             }
             catch (ManagedException ex)
@@ -93,6 +101,7 @@ namespace DynamicAuth.Controllers
                 return BadRequest(ex);
             }
         }
+        [AllowAnonymous]
         [HttpPost("ValidteOTPAndChangePassword")]
         public async Task<IActionResult> ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
         {
