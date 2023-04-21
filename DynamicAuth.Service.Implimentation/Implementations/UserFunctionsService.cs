@@ -39,7 +39,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
         public async Task Signup(SignupCommand cmd)
         {
             await ValidateUserCreation(cmd.NationalId, cmd.Email, cmd.PhoneNumber);
-            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.City, cmd.Province, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId );
+            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.City, cmd.Province, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId,cmd.BanksCardsNumber);
             var result = await _userManager.CreateAsync(user, cmd.Password);
 
             if (!result.Succeeded)
