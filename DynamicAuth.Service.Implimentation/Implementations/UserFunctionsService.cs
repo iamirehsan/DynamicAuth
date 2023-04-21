@@ -39,7 +39,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
         public async Task Signup(SignupCommand cmd)
         {
             await ValidateUserCreation(cmd.NationalId, cmd.Email, cmd.PhoneNumber);
-            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.City, cmd.Province, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId);
+            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.City, cmd.Province, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId );
             var result = await _userManager.CreateAsync(user, cmd.Password);
 
             if (!result.Succeeded)
@@ -83,22 +83,13 @@ namespace DynamicAuth.Service.Implimentation.Implementations
                 throw new ManagedException(result.Errors.Select(x => x.Description));
 
         }
-        public async Task ValidateOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
+        public async Task ValidateOTP(ValidteOTPCommand cmd)
         {
             var otp = await _redisDb.StringGetAsync(cmd.OTPKey);
             if (otp == string.Empty)
                 throw new ManagedException("کد وارد شده منقضی شده است.");
             if (otp != cmd.OTP)
                 throw new ManagedException("کد وارد شده اشتباه است.");
-            var user = await _userManager.FindByEmailAsync(cmd.UserNameOrPassword) is null ? await _userManager.FindByNameAsync(cmd.UserNameOrPassword) : await _userManager.FindByEmailAsync(cmd.UserNameOrPassword);
-            if (user is null)
-                throw new ManagedException("نام کاربری یا ایمیل اشتباه میباشد. ");
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var result = await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
-            if (!result.Succeeded)
-                throw new ManagedException(result.Errors.Select(x => x.Description));
-
-
         }
         public async Task<string> SendOTPByEmailForForgetPassword(string UserNameOrEmial)
         {
@@ -115,6 +106,16 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             return id;
 
 
+        }
+        public async Task RestartPassword(RestartPasswordCommand cmd)
+        {
+            var user = await _userManager.FindByEmailAsync(cmd.UserNameOrPassword) is null ? await _userManager.FindByNameAsync(cmd.UserNameOrPassword) : await _userManager.FindByEmailAsync(cmd.UserNameOrPassword);
+            if (user is null)
+                throw new ManagedException("نام کاربری یا ایمیل اشتباه میباشد. ");
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, cmd.NewPassword);
+            if (!result.Succeeded)
+                throw new ManagedException(result.Errors.Select(x => x.Description));
         }
         private string EmailBodyMaker(string message)
         {
@@ -174,6 +175,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
 
         }
 
-
+      
     }
 }

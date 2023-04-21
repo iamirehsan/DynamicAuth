@@ -102,12 +102,28 @@ namespace DynamicAuth.Controllers
             }
         }
         [AllowAnonymous]
-        [HttpPost("ValidteOTPAndChangePassword")]
-        public async Task<IActionResult> ValidteOTPAndChangePassword(ValidteOTPAndChangePasswordCommand cmd)
+        [HttpPost("ValidteOTP")]
+        public async Task<IActionResult> ValidteOTPAndChangePassword(ValidteOTPCommand cmd)
         {
             try
             {
-                await _serviceHolder.UserFunctionsService.ValidateOTPAndChangePassword(cmd);
+                await _serviceHolder.UserFunctionsService.ValidateOTP(cmd);
+                return Ok(new ResponseMessage("رمز یکبار مصرف بررسی شد."));
+
+            }
+            catch (ManagedException ex)
+            {
+
+                return BadRequest(ex);
+            }
+        }
+        [AllowAnonymous]
+        [HttpPost("RestartPassword")]
+        public async Task<IActionResult> RestartPassword(RestartPasswordCommand cmd)
+        {
+            try
+            {
+                await _serviceHolder.UserFunctionsService.RestartPassword(cmd);
                 return Ok(new ResponseMessage("رمز عبور با موفقیت بازیابی شد."));
 
             }

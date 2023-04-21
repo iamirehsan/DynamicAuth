@@ -12,6 +12,7 @@ namespace DynamicAuth.Domain.Entites
         public string NationalId { get; set; }
         public string RegionId { get; set; }
         public bool IsDeleted { get; set; }
+        public string BanksCardsNumber { get; set; }
         public User(string userName, string firstName, string lastName, string email, string phoneNumber, string city, string province, DateTime dateOfBirth, string nationalId ,string regionId)
         {
             UserName = userName;
@@ -25,6 +26,7 @@ namespace DynamicAuth.Domain.Entites
             DateOfBirth = dateOfBirth;
             NationalId = nationalId;
             RegionId = regionId;
+        
 
 
         }
