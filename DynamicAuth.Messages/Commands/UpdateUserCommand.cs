@@ -17,6 +17,7 @@ namespace DynamicAuth.Messages.Commands
        public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public  string  RegionId { get; set; }
+        public string BanksCardNumber { get; set; }
 
     }
 }

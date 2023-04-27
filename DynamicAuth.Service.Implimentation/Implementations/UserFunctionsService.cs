@@ -39,7 +39,8 @@ namespace DynamicAuth.Service.Implimentation.Implementations
         public async Task Signup(SignupCommand cmd)
         {
             await ValidateUserCreation(cmd.NationalId, cmd.Email, cmd.PhoneNumber);
-            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.City, cmd.Province, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId,cmd.BanksCardsNumber);
+            var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId);
+            user.BanksCardsNumber = cmd.BanksCardsNumber;
             var result = await _userManager.CreateAsync(user, cmd.Password);
 
             if (!result.Succeeded)
@@ -66,11 +67,10 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             user.LastName = cmd.LastName;
             user.Email = cmd.Email;
             user.PhoneNumber = cmd.PhoneNumber;
-            user.City = cmd.City;
-            user.Province = cmd.Province;
             user.DateOfBirth = cmd.DateOfBirth;
             user.NationalId = cmd.NationalId;
             user.RegionId = cmd.RegionId;
+            user.BanksCardsNumber = cmd.BanksCardNumber;
             await _unitOfWork.CommitAsync();
 
 
@@ -100,7 +100,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
                 throw new ManagedException("نام کاربری یا ایمیل وارد شده در سامانه ثبت نشده است. ");
             var id = Guid.NewGuid().ToString();
             var otp = CodeGenerator.RandomCode(6, new Random());
-             var emailmessage = $"{_configuration["Email:OTPBody"]}\n{otp}";
+            var emailmessage = $"{_configuration["Email:OTPBody"]}\n{otp}";
             EmailSender(user.Email, _configuration["Email:EmailAdrees"], _configuration["Email:OTPSubject"], emailmessage, _configuration["Email:SmtpServer"], int.Parse(_configuration["Email:SmtpPort"]), _configuration["Email:EmailPassword"]);
             await _redisDb.StringSetAsync(id, otp, TimeSpan.FromMinutes(10));
             return id;
@@ -175,6 +175,6 @@ namespace DynamicAuth.Service.Implimentation.Implementations
 
         }
 
-      
+
     }
 }
