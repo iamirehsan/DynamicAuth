@@ -34,10 +34,6 @@ namespace DynamicAuth.Repository.Implimentation.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -91,9 +87,6 @@ namespace DynamicAuth.Repository.Implimentation.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionId")
                         .IsRequired()

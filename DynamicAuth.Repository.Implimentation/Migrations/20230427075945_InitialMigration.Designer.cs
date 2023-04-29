@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DynamicAuth.Repository.Implimentation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230418100842_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20230427075945_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace DynamicAuth.Repository.Implimentation.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
+                    b.Property<string>("BanksCardsNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -90,9 +90,6 @@ namespace DynamicAuth.Repository.Implimentation.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionId")
                         .IsRequired()
