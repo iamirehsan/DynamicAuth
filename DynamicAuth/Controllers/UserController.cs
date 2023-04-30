@@ -36,7 +36,7 @@ namespace DynamicAuth.Controllers
             catch (ManagedException ex)
             {
 
-                return BadRequest(ex);
+                return BadRequest(ex.ErrorMessage);
             }
         }
         [AllowAnonymous]
@@ -98,7 +98,7 @@ namespace DynamicAuth.Controllers
             catch (ManagedException ex)
             {
 
-                return BadRequest(ex);
+                return BadRequest(ex.ErrorMessage);
             }
         }
         [AllowAnonymous]
@@ -114,7 +114,7 @@ namespace DynamicAuth.Controllers
             catch (ManagedException ex)
             {
 
-                return BadRequest(ex);
+                return BadRequest(ex.ErrorMessage);
             }
         }
         [AllowAnonymous]
@@ -130,7 +130,7 @@ namespace DynamicAuth.Controllers
             catch (ManagedException ex)
             {
 
-                return BadRequest(ex);
+                return BadRequest(ex.ErrorMessage);
             }
         }
     }
