@@ -36,7 +36,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
             _unitOfWork = unitOfWork;
             _redisDb = redisService.GetDatabase();
         }
-        public async Task Signup(SignupCommand cmd)
+        public async Task<string> Signup(SignupCommand cmd)
         {
             await ValidateUserCreation(cmd.NationalId, cmd.Email, cmd.PhoneNumber);
             var user = new User(cmd.UserName, cmd.FirstName, cmd.LastName, cmd.Email, cmd.PhoneNumber, cmd.DateOfBirth, cmd.NationalId, cmd.RegionId);
@@ -48,6 +48,7 @@ namespace DynamicAuth.Service.Implimentation.Implementations
 
                 throw new ManagedException(result.Errors.Select(x => x.Description));
             }
+            return user.Id;
 
         }
         public async Task<string> Signin(SigninCommand cmd)

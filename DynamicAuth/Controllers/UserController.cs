@@ -45,8 +45,8 @@ namespace DynamicAuth.Controllers
         {
             try
             {
-                await _serviceHolder.UserFunctionsService.Signup(cmd);
-                return Ok(new ResponseMessage("ثبت نام با موفقیت صورت گرفت. "));
+                var result = await _serviceHolder.UserFunctionsService.Signup(cmd);
+                return Ok(new ResponseMessage("ثبت نام با موفقیت صورت گرفت.", new {Id=result},1));
 
             }
             catch (ManagedException ex)
