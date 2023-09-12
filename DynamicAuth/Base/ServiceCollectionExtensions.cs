@@ -9,10 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using DynamicAuth.Service.Interfaces;
 using DynamicAuth.Repository;
 using DynamicAuth.Service.Implimentation.Implementations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using StackExchange.Redis;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace DynamicAuth.Base
 {
